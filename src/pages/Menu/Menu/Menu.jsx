@@ -10,7 +10,7 @@ const Menu = () => {
                 <title>Bistro Boss | Menu</title>
             </Helmet>
             <Cover img={menuimg} title="Our Menu"></Cover>
-            <PopularMenu></PopularMenu>
+            
         </div>
      );
 }
