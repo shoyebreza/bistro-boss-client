@@ -1,27 +1,31 @@
 import { Helmet } from 'react-helmet-async';
 import orderCover from '../../../assets/shop/banner2.jpg'
 import Cover from '../../Shared/Cover/Cover';
-import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { useState } from 'react';
 import useMenu from '../../../hooks/useMenu';
+import FoodCard from '../../../components/FoodCard/FoodCard';
+import OrderTab from '../OrderTab/OrderTab';
+import { useParams } from 'react-router';
 
 const Order = () => {
     const [tabIndex, setTabIndex] = useState(0);
     const [menu] = useMenu();
+    const category = useParams();
     const desserts = menu.filter(item => item.category === 'dessert');
     const soups = menu.filter(item => item.category === 'soup');
     const salads = menu.filter(item => item.category === 'salad');
     const pizza = menu.filter(item => item.category === 'pizza');
     const offered = menu.filter(item => item.category === 'offered');
-    
-    return ( 
+
+    return (
         <div>
             <Helmet>
                 <title>Bistro Boss | Order</title>
             </Helmet>
             <Cover img={orderCover} title="Order Food"></Cover>
-            <Tabs defaultIndex={tabIndex} onSelect={(index)=> setTabIndex(index)} className="text-center mt-10">
+            <Tabs defaultIndex={tabIndex} onSelect={(index) => setTabIndex(index)} className="text-center mt-10">
                 <TabList>
                     <Tab>Salad</Tab>
                     <Tab>Pizza</Tab>
@@ -30,28 +34,23 @@ const Order = () => {
                     <Tab>Drinks</Tab>
                 </TabList>
                 <TabPanel>
-                    <h2>Salad</h2>
-                    <p>Delicious salad options!</p>
+                    <OrderTab items={salads}></OrderTab>
                 </TabPanel>
                 <TabPanel>
-                    <h2>Pizza</h2>
-                    <p>Authentic pizza recipes!</p>
+                    <OrderTab items={pizza}></OrderTab>
                 </TabPanel>
                 <TabPanel>
-                    <h2>Soup</h2>
-                    <p>Warm and comforting soups!</p>
+                    <OrderTab items={soups}></OrderTab>
                 </TabPanel>
                 <TabPanel>
-                    <h2>Desert</h2>
-                    <p>Sweet and delightful desserts!</p>
+                    <OrderTab items={desserts}></OrderTab>
                 </TabPanel>
                 <TabPanel>
-                    <h2>Drinks</h2>
-                    <p>Refreshing beverages!</p>
+                    <OrderTab items={offered}></OrderTab>
                 </TabPanel>
             </Tabs>
         </div>
-     );
+    );
 }
- 
+
 export default Order;
