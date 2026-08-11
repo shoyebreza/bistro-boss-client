@@ -3,16 +3,23 @@ import orderCover from '../../../assets/shop/banner2.jpg'
 import Cover from '../../Shared/Cover/Cover';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useMenu from '../../../hooks/useMenu';
-import FoodCard from '../../../components/FoodCard/FoodCard';
 import OrderTab from '../OrderTab/OrderTab';
 import { useParams } from 'react-router';
 
 const Order = () => {
-    const [tabIndex, setTabIndex] = useState(0);
+    const { category } = useParams();
+    const categories = ['salad', 'pizza', 'soup', 'dessert', 'drinks'];
+    const initialIndex = categories.indexOf(category);
+    const startingIndex = initialIndex < 0 ? 0 : initialIndex;
+    const [tabIndex, setTabIndex] = useState(startingIndex);
     const [menu] = useMenu();
-    const category = useParams();
+
+    useEffect(() => {
+        setTabIndex(startingIndex);
+    }, [startingIndex]);
+    
     const desserts = menu.filter(item => item.category === 'dessert');
     const soups = menu.filter(item => item.category === 'soup');
     const salads = menu.filter(item => item.category === 'salad');
@@ -22,7 +29,7 @@ const Order = () => {
     return (
         <div>
             <Helmet>
-                <title>Bistro Boss | Order</title>
+                <title>Bistro Boss | Order Food</title>
             </Helmet>
             <Cover img={orderCover} title="Order Food"></Cover>
             <Tabs defaultIndex={tabIndex} onSelect={(index) => setTabIndex(index)} className="text-center mt-10">
