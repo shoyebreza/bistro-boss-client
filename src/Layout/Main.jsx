@@ -5,7 +5,7 @@ import NavBar from "../pages/Shared/NavBar/NavBar";
 
 const Main = () => {
     const location = useLocation();
-    const isLoginPage = location.pathname === "/login";
+    const isLoginPage = location.pathname === "/login" || location.pathname === "/signup";
     return ( 
         <div>
             {!isLoginPage && <NavBar></NavBar>}

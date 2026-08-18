@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from "react-simple-captcha";
+import { AuthContext } from "../../Providers/AuthProvider";
+import { Link } from "react-router";
 const Login = () => {
 
     const captchaRef = useRef(null);
@@ -17,12 +19,25 @@ const Login = () => {
     }
 
 
-    const handleSubmit = (event) => {
+
+    const { signIn } = useContext(AuthContext);
+
+
+    const handleLogin = (event) => {
         event.preventDefault();
         const form = event.target;
         const email = form.email.value;
         const password = form.password.value;
         // Handle login logic here
+        signIn(email, password)
+            .then(result => {
+                const loggedUser = result.user;
+                console.log(loggedUser);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
     };
 
     useEffect(() => {
@@ -43,7 +58,7 @@ const Login = () => {
                         </p>
                     </div>
                     <div className="card md:w-1/2 max-w-sm shrink-0 shadow-2xl">
-                        <form onSubmit={handleSubmit} className="card-body">
+                        <form onSubmit={handleLogin} className="card-body">
                             <fieldset className="fieldset">
                                 <label className="label">Email</label>
                                 <input type="email" name="email" className="input" placeholder="Email" />
@@ -57,6 +72,7 @@ const Login = () => {
                                 <button type="submit" disabled={disabled} className="btn btn-neutral mt-4">Login</button>
                             </fieldset>
                         </form>
+                        <p><small>New Here? <Link to="/signup">Sign Up</Link></small></p>
                     </div>
                 </div>
             </div>
