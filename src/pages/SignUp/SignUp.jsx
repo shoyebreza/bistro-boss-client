@@ -1,6 +1,14 @@
 import { Helmet } from "react-helmet-async";
-
+import {useForm} from "react-hook-form";
 const SignUp = () => {
+
+
+    const { register, handleSubmit, formState: { errors } } = useForm();
+
+    const onSubmit = data => {
+        console.log(data);
+    }
+
     return (
         <div>
             <Helmet>
@@ -16,18 +24,21 @@ const SignUp = () => {
                         </p>
                     </div>
                     <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-                        <div className="card-body">
+                        <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
                             <fieldset className="fieldset">
                                 <label className="label">Name</label>
-                                <input type="text" className="input" placeholder="Name" />
+                                <input type="text" className="input" placeholder="Name" {...register("name", { required: true })} />
+                                {errors.name && <p className="text-error">Name is required</p>}
                                 <label className="label">Email</label>
-                                <input type="email" className="input" placeholder="Email" />
+                                <input type="email" className="input" placeholder="Email" {...register("email", { required: true })} />
+                                {errors.email && <p className="text-error">Invalid email address</p>}
                                 <label className="label">Password</label>
-                                <input type="password" className="input" placeholder="Password" />
+                                <input type="password" className="input" placeholder="Password" {...register("password", { required: true, minLength: 6, maxLength: 12 })} />
+                                {errors.password && <p className="text-error">Password must be between 6 and 12 characters</p>}
                                 <div><a className="link link-hover">Forgot password?</a></div>
-                                <button className="btn btn-neutral mt-4">Sign Up</button>
+                                <button type="submit" className="btn btn-neutral mt-4">Sign Up</button>
                             </fieldset>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
