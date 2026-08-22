@@ -1,12 +1,23 @@
+import { useContext } from "react";
 import { Helmet } from "react-helmet-async";
 import {useForm} from "react-hook-form";
+import { AuthContext } from "../../Providers/AuthProvider";
 const SignUp = () => {
 
 
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const { createUser } = useContext(AuthContext);
 
     const onSubmit = data => {
         console.log(data);
+        createUser(data.email, data.password)
+        .then(result => {
+            const loggedUser = result.user;
+            console.log(loggedUser);
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 
     return (
@@ -33,8 +44,18 @@ const SignUp = () => {
                                 <input type="email" className="input" placeholder="Email" {...register("email", { required: true })} />
                                 {errors.email && <p className="text-error">Invalid email address</p>}
                                 <label className="label">Password</label>
-                                <input type="password" className="input" placeholder="Password" {...register("password", { required: true, minLength: 6, maxLength: 12 })} />
-                                {errors.password && <p className="text-error">Password must be between 6 and 12 characters</p>}
+                                <input type="password" className="input" placeholder="Password" 
+                                {...register("password", { 
+                                    required: true, 
+                                    minLength: 6, 
+                                    maxLength: 12,
+                                    pattern: /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{6,}$/
+                                    })} />
+
+                                {errors.password?.type==='required' && <p className="text-error">Password is required</p>}
+                                {errors.password?.type==='minLength' && <p className="text-error">Password must be at least 6 characters</p>}
+                                {errors.password?.type==='maxLength' && <p className="text-error">Password must be no more than 12 characters</p>}
+                                {errors.password?.type==='pattern' && <p className="text-error">Password must contain at least one uppercase letter, one special character, and one number</p>}
                                 <div><a className="link link-hover">Forgot password?</a></div>
                                 <button type="submit" className="btn btn-neutral mt-4">Sign Up</button>
                             </fieldset>
