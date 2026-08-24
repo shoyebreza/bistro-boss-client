@@ -2,11 +2,15 @@ import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from "react-simple-captcha";
 import { AuthContext } from "../../Providers/AuthProvider";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 const Login = () => {
 
     const [disabled, setDisabled] = useState(true);
+    const { signIn } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+    let from = location.state?.from?.pathname || "/";
 
     const handleValidateCaptcha = (e) => {
         e.preventDefault();
@@ -20,7 +24,7 @@ const Login = () => {
 
 
 
-    const { signIn } = useContext(AuthContext);
+
 
 
     const handleLogin = (event) => {
@@ -37,6 +41,7 @@ const Login = () => {
                     title: 'Login Successful',
                     text: 'You have successfully logged in!',
                 });
+                navigate(from, { replace: true });
             })
             .catch(error => {
                 console.log(error);
@@ -75,7 +80,7 @@ const Login = () => {
                                 <input type="password" name="password" className="input" placeholder="Password" />
                                 <label className="label"><LoadCanvasTemplate /></label>
                                 <input onBlur={handleValidateCaptcha} type="text" name="captcha" className="input" placeholder="Enter Captcha" />
-                              
+
                                 <div><a className="link link-hover">New user? Register here</a></div>
                                 <div><a className="link link-hover">Forgot password?</a></div>
                                 <button type="submit" disabled={disabled} className="btn btn-neutral mt-4">Login</button>
