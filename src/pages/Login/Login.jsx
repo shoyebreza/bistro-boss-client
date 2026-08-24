@@ -40,7 +40,7 @@ const Login = () => {
             })
             .catch(error => {
                 console.log(error);
-                swal.fire({
+                Swal.fire({
                     title: 'Login Failed',
                     text: 'Invalid email or password.',
                     icon: 'error'
@@ -74,7 +74,7 @@ const Login = () => {
                                 <label className="label">Password</label>
                                 <input type="password" name="password" className="input" placeholder="Password" />
                                 <label className="label"><LoadCanvasTemplate /></label>
-                                <input onChange={handleValidateCaptcha} type="text" name="captcha" className="input" placeholder="Enter Captcha" />
+                                <input onBlur={handleValidateCaptcha} type="text" name="captcha" className="input" placeholder="Enter Captcha" />
                               
                                 <div><a className="link link-hover">New user? Register here</a></div>
                                 <div><a className="link link-hover">Forgot password?</a></div>
