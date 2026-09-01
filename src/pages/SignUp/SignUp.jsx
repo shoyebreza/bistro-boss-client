@@ -41,9 +41,17 @@ const SignUp = () => {
                                 <label className="label">Name</label>
                                 <input type="text" className="input" placeholder="Name" {...register("name", { required: true })} />
                                 {errors.name && <p className="text-error">Name is required</p>}
+
+
+                                <label className="label">Photo URL</label>
+                                <input type="text" className="input" placeholder="Photo URL" {...register("photoUrl", { required: true })} />
+                                {errors.photoUrl && <p className="text-error">Photo URL is required</p>}
+
                                 <label className="label">Email</label>
                                 <input type="email" className="input" placeholder="Email" {...register("email", { required: true })} />
                                 {errors.email && <p className="text-error">Invalid email address</p>}
+
+
                                 <label className="label">Password</label>
                                 <input type="password" className="input" placeholder="Password" 
                                 {...register("password", { 
@@ -57,8 +65,11 @@ const SignUp = () => {
                                 {errors.password?.type==='minLength' && <p className="text-error">Password must be at least 6 characters</p>}
                                 {errors.password?.type==='maxLength' && <p className="text-error">Password must be no more than 12 characters</p>}
                                 {errors.password?.type==='pattern' && <p className="text-error">Password must contain at least one uppercase letter, one special character, and one number</p>}
+
                                 <div><a className="link link-hover">Forgot password?</a></div>
+
                                 <button type="submit" className="btn btn-neutral mt-4">Sign Up</button>
+                                
                             </fieldset>
                         </form>
                         <p><small>Already have an account? <Link to="/login">Login</Link></small></p>
