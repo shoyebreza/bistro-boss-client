@@ -2,12 +2,15 @@ import { useContext } from "react";
 import { Helmet } from "react-helmet-async";
 import {useForm} from "react-hook-form";
 import { AuthContext } from "../../Providers/AuthProvider";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import Swal from "sweetalert2";
+
+
 const SignUp = () => {
 
-
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const { createUser } = useContext(AuthContext);
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const { createUser, updateUserProfile } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const onSubmit = data => {
         console.log(data);
@@ -15,6 +18,19 @@ const SignUp = () => {
         .then(result => {
             const loggedUser = result.user;
             console.log(loggedUser);
+            updateUserProfile(data.name, data.photoUrl)
+            .then(() => {
+                console.log('User profile updated');
+                reset();
+                Swal.fire({
+                    title: 'Sign Up Successful',
+                    text: 'You have successfully signed up!',
+                });
+                navigate('/');
+            })
+            .catch(error => {
+                console.log(error);
+            });
         })
         .catch(error => {
             console.log(error);
@@ -69,7 +85,7 @@ const SignUp = () => {
                                 <div><a className="link link-hover">Forgot password?</a></div>
 
                                 <button type="submit" className="btn btn-neutral mt-4">Sign Up</button>
-                                
+
                             </fieldset>
                         </form>
                         <p><small>Already have an account? <Link to="/login">Login</Link></small></p>
