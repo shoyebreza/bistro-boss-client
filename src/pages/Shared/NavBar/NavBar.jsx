@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../../../Providers/AuthProvider";
 
 const NavBar = () => {
@@ -20,11 +20,15 @@ const NavBar = () => {
         <li><Link to="/menu">Menu</Link></li>
         <li><Link to="/order">Order Food</Link></li>
         <li><Link to="/secret">Secret</Link></li>
-        {user ? <>
-            <span>Welcome, {user.displayName}</span>
-            <li><Link to="/dashboard">Dashboard</Link></li>
-            <li><button onClick={handleLogout}>Logout</button></li>
-        </> : <li><Link to="/login">Login</Link></li>}
+        {user ? (
+            <>
+                <li className="text-white">Welcome, {user.displayName}</li>
+                <li><Link to="/dashboard">Dashboard</Link></li>
+                <li><button type="button" onClick={handleLogout}>Logout</button></li>
+            </>
+        ) : (
+            <li><Link to="/login">Login</Link></li>
+        )}
     </>;
     return (
         <div className="navbar fixed z-10 bg-opacity-30 shadow-sm bg-black text-white max-w-screen-xl mx-auto">
@@ -47,7 +51,11 @@ const NavBar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <Link to="/login" className="btn btn-outline btn-warning">Login</Link>
+                {user ? (
+                    <button type="button" onClick={handleLogout} className="btn btn-outline btn-warning">Logout</button>
+                ) : (
+                    <Link to="/login" className="btn btn-outline btn-warning">Login</Link>
+                )}
             </div>
         </div>
     );

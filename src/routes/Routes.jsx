@@ -5,6 +5,7 @@ import Menu from '../pages/Menu/Menu/Menu.jsx';
 import Order from '../pages/Order/Order/Order.jsx';
 import Login from '../pages/Login/Login.jsx';
 import SignUp from '../pages/SignUp/SignUp.jsx';
+import Secret from '../pages/Shared/Secret/Secret.jsx';
 import PrivateRoutes from './PrivateRoutes.jsx';
 
 export const router = createBrowserRouter([

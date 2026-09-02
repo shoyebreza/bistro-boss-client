@@ -80,8 +80,7 @@ const Login = () => {
                                 <input type="password" name="password" className="input" placeholder="Password" />
                                 <label className="label"><LoadCanvasTemplate /></label>
                                 <input onBlur={handleValidateCaptcha} type="text" name="captcha" className="input" placeholder="Enter Captcha" />
-
-                                <div><a className="link link-hover">New user? Register here</a></div>
+                                
                                 <div><a className="link link-hover">Forgot password?</a></div>
                                 <button type="submit" disabled={disabled} className="btn btn-neutral mt-4">Login</button>
                             </fieldset>
