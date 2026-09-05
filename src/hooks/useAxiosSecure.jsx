@@ -8,7 +8,7 @@ export const axiosSecure = () => {
 };
 
 const useAxiosSecure = () => {
-    return axiosSecure;
+    return axiosSecure();
 };
 
 export default useAxiosSecure;

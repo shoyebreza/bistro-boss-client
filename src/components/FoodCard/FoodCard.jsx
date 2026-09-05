@@ -1,12 +1,13 @@
 
 import Swal from "sweetalert2";
-import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const FoodCard = ({ item }) => {
     const navigate = useNavigate();
     const location = useLocation(); // Get the current location
+    const axiosSecure = useAxiosSecure();
     const { _id, name, image, price, recipe } = item;
     const { user } = useAuth();
 
@@ -14,11 +15,11 @@ const FoodCard = ({ item }) => {
         if (user && user.email) {
             // Create a new cart item
             const cartItem = { menuId:_id, email: user.email, name, image, price };
-            axios.post('http://localhost:3000/carts', cartItem)
+            axiosSecure.post('/carts', cartItem)
                 .then(res => {
                     if (res.data.insertedId) {
                         Swal.fire({
-                            title: 'Item added to cart',
+                            title: `${name} added to your cart`,
                             icon: 'success',
                             confirmButtonText: 'Continue Shopping'
                         });
