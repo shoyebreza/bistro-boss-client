@@ -3,11 +3,13 @@ import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useCart from "../../hooks/useCart";
 
 const FoodCard = ({ item }) => {
     const navigate = useNavigate();
     const location = useLocation(); // Get the current location
     const axiosSecure = useAxiosSecure();
+    const [, refetch] = useCart();
     const { _id, name, image, price, recipe } = item;
     const { user } = useAuth();
 
@@ -25,6 +27,10 @@ const FoodCard = ({ item }) => {
                         });
                     }
                 });
+
+                // Refetch the cart data to update the cart count
+                refetch();
+                
         }else {
             Swal.fire({
                 title: 'Please log in to order the food',
