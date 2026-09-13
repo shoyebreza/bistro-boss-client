@@ -23,7 +23,7 @@ const SignUp = () => {
             .then(() => {
                 /* console.log('User profile updated'); */
                 const userInfo = { name: data.name, email: data.email };
-                axiosPublic.post('/users', { userInfo })
+                axiosPublic.post('/users', userInfo)
                 .then(response => {
                     if (response.data.insertedId) {
                         console.log('User info saved to database');
