@@ -18,6 +18,11 @@ const AllUsers = () => {
         queryClient.invalidateQueries({ queryKey: ['users'] });
     };
 
+    const handleMakeAdmin = async (user) => {
+        await axiosSecure.patch(`/users/admin/${user._id}`);
+        queryClient.invalidateQueries({ queryKey: ['users'] });
+    }
+
     return (
         <div className="w-full">
             <div className="flex flex-col gap-2 border-b border-base-300 pb-5 sm:flex-row sm:items-center sm:justify-between">
@@ -41,7 +46,7 @@ const AllUsers = () => {
                                 <td>{index + 1}</td>
                                 <td>{user.name || user?.userInfo?.name || 'N/A'}</td>
                                 <td>{user.email || user?.userInfo?.email || 'N/A'}</td>
-                                <td> <button className="btn btn-lg bg-orange-500 hover:bg-orange-600 text-white"><FaUsers className="text-white font-2xl" /></button></td>
+                                <td> <button onClick={()=> handleMakeAdmin(user)} className="btn btn-lg bg-orange-500 hover:bg-orange-600 text-white"><FaUsers className="text-white font-2xl" /></button></td>
                                 <td>
                                     <button
                                         onClick={() => handleDeleteUser(user._id)}
