@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 const AllUsers = () => {
     const axiosSecure = useAxiosSecure();
     const queryClient = useQueryClient();
-    const { data: users = [] } = useQuery({
+    const { data: users = [], refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
             const res = await axiosSecure.get('/users');
@@ -37,6 +37,14 @@ const AllUsers = () => {
                             timer: 1500
                         });
                     }
+                })
+                .catch(error => {
+                    console.error('Error deleting user:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Delete failed',
+                        text: 'The server could not delete this user.'
+                    });
                 });
                 queryClient.invalidateQueries({ queryKey: ['users'] });
             }
@@ -66,6 +74,14 @@ const AllUsers = () => {
                             timer: 1500
                         });
                     }
+                })
+                .catch(error => {
+                    console.error('Error making user admin:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Make Admin failed',
+                        text: 'The server could not make this user an admin.'
+                    });
                 });
                 queryClient.invalidateQueries({ queryKey: ['users'] });
             }
