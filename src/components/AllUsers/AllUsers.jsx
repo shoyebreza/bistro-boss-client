@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { FaTrash, FaUsers } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const AllUsers = () => {
     const axiosSecure = useAxiosSecure();
@@ -14,13 +15,61 @@ const AllUsers = () => {
     });
 
     const handleDeleteUser = async (id) => {
-        await axiosSecure.delete(`/users/${id}`);
-        queryClient.invalidateQueries({ queryKey: ['users'] });
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                await axiosSecure.delete(`/users/${id}`)
+                .then(res => {
+                    if (res.data.deletedCount > 0) {
+                        refetch();
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'User deleted successfully!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                });
+                queryClient.invalidateQueries({ queryKey: ['users'] });
+            }
+        });
     };
 
-    const handleMakeAdmin = async (user) => {
-        await axiosSecure.patch(`/users/admin/${user._id}`);
-        queryClient.invalidateQueries({ queryKey: ['users'] });
+    const handleMakeAdmin = async user => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: `You want to make ${user.name || user?.userInfo?.name || 'this user'} an admin?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, make admin!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                await axiosSecure.patch(`/users/admin/${user._id}`)
+                .then(res => {
+                    if (res.data.modifiedCount > 0) {
+                        refetch();
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: `${user.name || user?.userInfo?.name || 'User'} is now an admin!`,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                });
+                queryClient.invalidateQueries({ queryKey: ['users'] });
+            }
+        });
     }
 
     return (
@@ -46,7 +95,7 @@ const AllUsers = () => {
                                 <td>{index + 1}</td>
                                 <td>{user.name || user?.userInfo?.name || 'N/A'}</td>
                                 <td>{user.email || user?.userInfo?.email || 'N/A'}</td>
-                                <td> <button onClick={()=> handleMakeAdmin(user)} className="btn btn-lg bg-orange-500 hover:bg-orange-600 text-white"><FaUsers className="text-white font-2xl" /></button></td>
+                                <td> { user.role === 'admin' ? 'Admin' : <button onClick={()=> handleMakeAdmin(user)} className="btn btn-lg bg-orange-500 hover:bg-orange-600 text-white"><FaUsers className="text-white font-2xl" /></button>}</td>
                                 <td>
                                     <button
                                         onClick={() => handleDeleteUser(user._id)}
