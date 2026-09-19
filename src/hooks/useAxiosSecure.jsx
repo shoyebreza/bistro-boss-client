@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router';
 
 export const axiosSecure = () => {
     return axios.create({
@@ -8,6 +9,8 @@ export const axiosSecure = () => {
 };
 
 const useAxiosSecure = () => {
+    const { logOut } = useAuth();
+    const navigate = useNavigate();
     const instance = axiosSecure();
 
     instance.interceptors.request.use(
@@ -27,10 +30,13 @@ const useAxiosSecure = () => {
         function(response) {
             return response;
         },
-        function(error) {
+        async function (error) {
             const status = error.response ? error.response.status : null;
             if (status === 401 || status === 403) {
                 // Handle unauthorized or forbidden responses
+                await logOut();
+                localStorage.removeItem('access_token');
+                navigate('/login');
             }
             return Promise.reject(error);
         }
