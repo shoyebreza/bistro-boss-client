@@ -1,13 +1,14 @@
 import { FaCalendarAlt, FaEnvelope, FaHome, FaList, FaListAlt, FaSearch, FaShoppingCart, FaUser, FaUtensilSpoon } from "react-icons/fa";
 import { NavLink, Outlet } from "react-router";
 import useCart from "../hooks/useCart";
+import useAdmin from "../hooks/useAdmin";
 
 
 const Dashboard = () => {
 
     const [cart] = useCart();
     // get admin value from databae
-    const isAdmin = true; 
+    const [isAdmin] = useAdmin();
 
     return (
         <div className="flex">
