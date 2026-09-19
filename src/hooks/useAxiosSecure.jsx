@@ -16,7 +16,7 @@ const useAxiosSecure = () => {
 
     instance.interceptors.request.use(
         function(config) {
-            const token = localStorage.getItem('access_token');
+            const token = localStorage.getItem('access-token');
             if (token) {
                 config.headers.authorization = `Bearer ${token}`;
             }
@@ -36,7 +36,7 @@ const useAxiosSecure = () => {
             if (status === 401 || status === 403) {
                 // Handle unauthorized or forbidden responses
                 await logOut();
-                localStorage.removeItem('access_token');
+                localStorage.removeItem('access-token');
                 navigate('/login');
             }
             return Promise.reject(error);
