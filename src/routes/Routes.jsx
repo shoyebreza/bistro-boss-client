@@ -55,11 +55,16 @@ export const router = createBrowserRouter([
                 element: <Cart />
             },
             
+            {
+                path: "addItems",
+                element: <adminRoute><AddItems /></adminRoute>
+            },
 
             // admin routes
+            
             {
                 path: "allUsers",
-                element: <AllUsers />
+                element: <adminRoute><AllUsers /></adminRoute>
             }
         ]
     }
