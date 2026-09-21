@@ -9,6 +9,10 @@ const useMenu = () => {
         .then(data => {
             setMenu(data);
             setLoading(false);
+        })
+        .catch(error => {
+            console.error('Failed to load menu:', error);
+            setLoading(false);
         });
     }, []);
     return [menu, loading];

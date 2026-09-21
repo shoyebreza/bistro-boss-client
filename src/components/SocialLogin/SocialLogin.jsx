@@ -16,20 +16,21 @@ const SocialLogin = () => {
 
         setIsSigningIn(true);
         signInWithGoogle()
-            .then(result => {
+            .then(async result => {
                 const loggedUser = result.user;
                 const userInfo = { name: loggedUser.displayName, email: loggedUser.email };
-                axiosPublic.post('/users', userInfo)
-                    .then(() => {
-                        navigate('/');
-                    })
-                    .catch(error => {
-                        if (error.response?.status === 400) {
-                            navigate('/');
-                            return;
-                        }
-                        console.error('Failed to save Google user:', error);
-                    });
+
+                const tokenResponse = await axiosPublic.post('/jwt', {
+                    email: loggedUser.email
+                });
+                localStorage.setItem('access-token', tokenResponse.data.token);
+
+                await axiosPublic.post('/users', userInfo, {
+                    headers: {
+                        Authorization: `Bearer ${tokenResponse.data.token}`
+                    }
+                });
+                navigate('/');
             })
             .catch(error => {
                 if (error.code !== 'auth/popup-closed-by-user') {

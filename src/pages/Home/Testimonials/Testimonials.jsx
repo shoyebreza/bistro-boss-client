@@ -13,7 +13,8 @@ const Testimonials = () => {
     useEffect(() => {
         fetch('http://localhost:3000/reviews')
             .then(res => res.json())
-            .then(data => setReviews(data));
+            .then(data => setReviews(data))
+            .catch(error => console.error('Failed to load reviews:', error));
     }, []);
 
 
