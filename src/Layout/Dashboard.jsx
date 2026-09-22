@@ -17,7 +17,7 @@ const Dashboard = () => {
                     {isAdmin ? (
                         <>
                             <li>
-                                <NavLink to="/dashboard/adminHome">
+                                <NavLink to="/dashboard">
                                     <FaHome /> Admin Home
                                 </NavLink>
                             </li>
@@ -45,7 +45,7 @@ const Dashboard = () => {
                     ) : (
                         <>
                             <li>
-                                <NavLink to="/dashboard/userHome">
+                                <NavLink to="/">
                                     <FaHome /> User Home
                                 </NavLink>
                             </li>
@@ -70,7 +70,7 @@ const Dashboard = () => {
                     {/* common links for both admin and user */}
                     <div className="divider"></div>
                     <li>
-                        <NavLink to="/dashboard/home">
+                        <NavLink to="/">
                             <FaHome /> Home
                         </NavLink>
                     </li>
