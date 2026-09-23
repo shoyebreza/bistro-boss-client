@@ -4,10 +4,15 @@ import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const imageHostingUrl = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const AddItems = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const axiosPublic = useAxiosPublic();
+    const axiosSecure = useAxiosSecure(); // Assuming you have a secure axios instance for authenticated requests
+
+
     const onSubmit = async (data) => {
         console.log(data);
         // Upload image to image hosting service
@@ -15,7 +20,40 @@ const AddItems = () => {
         const formData = new FormData();
         formData.append("image", imageFile);
         const res = await axiosPublic.post(imageHostingUrl, formData);
-        console.log(res.data);
+        if (res.data.success) {
+            const imageUrl = res.data.data.display_url;
+            const newItem = {
+                name: data.name,
+                category: data.category,
+                price: parseFloat(data.price),
+                recipe: data.recipe,
+                image: imageUrl
+            };
+            // Here you can send newItem to your backend or database
+            try {
+                const response = await axiosSecure.post('/menu', newItem);
+                console.log(response.data);
+                if (response.data.insertedId) {
+                    reset(); // Reset the form after successful submission
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'New item added successfully!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            } catch (error) {
+                console.error("Error adding new item:", error);
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Error adding new item',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        }
     };
     return (
         <div>
