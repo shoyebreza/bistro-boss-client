@@ -1,13 +1,21 @@
 import { useForm } from "react-hook-form";
 import { FaAsterisk } from "react-icons/fa";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
-
+const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const imageHostingUrl = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const AddItems = () => {
-    const { register, handleSubmit, reset, formState: { errors } } = useForm();
-    const onSubmit = data => {
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const axiosPublic = useAxiosPublic();
+    const onSubmit = async (data) => {
         console.log(data);
-        reset();
+        // Upload image to image hosting service
+        const imageFile = data.image[0];
+        const formData = new FormData();
+        formData.append("image", imageFile);
+        const res = await axiosPublic.post(imageHostingUrl, formData);
+        console.log(res.data);
     };
     return (
         <div>
