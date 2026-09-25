@@ -10,7 +10,7 @@ const ManageItems = () => {
     const [menu, , refetch] = useMenu();
     const axiosSecure = useAxiosSecure();
 
-    const handleDeleteItem = (item) => {
+    const handleDeleteItem = async (item) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
