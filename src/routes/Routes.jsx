@@ -12,6 +12,7 @@ import Cart from '../pages/Dashboard/Cart/Cart.jsx';
 import AllUsers from '../components/AllUsers/AllUsers.jsx';
 import AddItems from '../pages/Dashboard/AddItems/AddItems.jsx';
 import AdminRoute from './AdminRoute.jsx';
+import ManageItems from '../pages/Dashboard/ManageItems/ManageItems.jsx';
 
 export const router = createBrowserRouter([
     {
@@ -20,19 +21,19 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Home />
+                element: <Home></Home>
             },
             {
                 path: "/menu",
-                element: <Menu />
+                element: <Menu></Menu>
             },
             {
                 path: "order",
-                element: <Order />
+                element: <Order></Order>
             },
             {
                 path: "order/:category",
-                element: <Order />
+                element: <Order></Order>
             },
             {
                 path: "/login",
@@ -59,14 +60,18 @@ export const router = createBrowserRouter([
             
             {
                 path: "addItem",
-                element: <AdminRoute><AddItems /></AdminRoute>
+                element: <AdminRoute><AddItems></AddItems></AdminRoute>
+            },
+            {
+                path: "manageItems",
+                element: <AdminRoute><ManageItems></ManageItems></AdminRoute>
             },
 
             // admin routes
             
             {
                 path: "allUsers",
-                element: <AdminRoute><AllUsers /></AdminRoute>
+                element: <AdminRoute><AllUsers></AllUsers></AdminRoute>
             }
         ]
     }
