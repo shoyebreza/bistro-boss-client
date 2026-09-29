@@ -68,6 +68,7 @@ const AuthProvider = ({ children }) => {
                     const res = await axiosPublic.post('/jwt', userInfo);
                     if(res.data.token){
                         localStorage.setItem('access-token', res.data.token);
+                        setLoading(false);
                     }
                 } catch (error) {
                     console.log(error);
@@ -75,9 +76,9 @@ const AuthProvider = ({ children }) => {
 
             }else{
                 localStorage.removeItem('access-token');
+                setLoading(false);
             }
             console.log('current user', currentUser);
-            setLoading(false);
         });
         return () => {
             return unsubscribe();
